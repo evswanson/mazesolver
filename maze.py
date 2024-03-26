@@ -27,6 +27,7 @@ class Maze:
         self._create_cells()
         self._break_entrance_and_exit()
         self._break_walls_r(0, 0)
+        self._reset_cells_visited()
     
     def _create_cells(self):
         for col in range(self._num_cols):
@@ -101,14 +102,19 @@ class Maze:
                 self._cells[i][j].has_left_wall = False
                 self._cells[i-1][j].has_right_wall = False
             # down
-            if next_index[1] == i + 1:
+            if next_index[1] == j + 1:
                 self._cells[i][j].has_bottom_wall = False
                 self._cells[i][j+1].has_top_wall = False
             # up 
-            if next_index[1] == i - 1:
+            if next_index[1] == j - 1:
                 self._cells[i][j].has_top_wall = False
                 self._cells[i][j-1].has_bottom_wall = False
 
             # move to the chosen cell by recursion
             self._break_walls_r(next_index[0], next_index[1])
+
+    def _reset_cells_visited(self):
+        for col in range(self._num_cols):
+            for row in range(self._num_rows):
+                self._cells[col][row].visited = False
             
